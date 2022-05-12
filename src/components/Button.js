@@ -6,10 +6,11 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 92%;
   height: 46px;
-  background-color: #0f0f0f;
+  background-color: #c1c1c1;
   border-radius: 5px;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-style: normal;
   font-weight: 700;

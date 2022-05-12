@@ -31,10 +31,7 @@ const StyledHeader = styled.header`
   border-radius: 3px;
   display: flex;
   justify-content: center;
-  font-family: Roboto;
-  // position: fixed;
-  // top: 0;
-  // left: 0;
+  font-family: "Koulen", cursive;
 
   .icon {
     font-size: 25px;
