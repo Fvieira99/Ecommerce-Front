@@ -1,10 +1,11 @@
 //Dependencies
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //Components
 import Header from "../components/Header";
 import Product from "../components/Product";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { getProducts } from "../service/API";
 
 export default function MainPage() {
   // Buscar no backend a quantidade de itens e dividir pelo limite de itens para
@@ -12,24 +13,24 @@ export default function MainPage() {
   const [isHome, setIsHome] = useState(true);
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(2);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getProducts(page)
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  function showProducts() {
+    // Criar Produto e fazer ternário no componente Main se length > 0 retornar essa função que irá fazer o map, length === 0 retornar outra coisa
+  }
+
   return (
     <Wrapper>
       <Header isHome={isHome}></Header>
-      <Main>
-        {/* {gerar produtos dinamicamente com map após buscar no DB} */}
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-        <Product />
-      </Main>
+      <Main></Main>
       <Footer>
         <nav>
           <IoIosArrowBack
@@ -38,6 +39,11 @@ export default function MainPage() {
             onClick={() => {
               if (page !== 1) {
                 setPage(page - 1);
+                getProducts(page)
+                  .then(response => {
+                    setProducts(response.data);
+                  })
+                  .catch(error => console.log(error));
               }
             }}
           />
@@ -49,6 +55,11 @@ export default function MainPage() {
             onClick={() => {
               if (page !== pageLimit) {
                 setPage(page + 1);
+                getProducts(page)
+                  .then(response => {
+                    setProducts(response.data);
+                  })
+                  .catch(error => console.log(error));
               }
             }}
           />
