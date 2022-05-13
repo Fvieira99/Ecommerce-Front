@@ -13,7 +13,7 @@ export default function MainPage() {
   const [isHome, setIsHome] = useState(true);
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(2);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
 
   useEffect(() => {
     getProducts(page)
@@ -27,10 +27,15 @@ export default function MainPage() {
     // Criar Produto e fazer ternário no componente Main se length > 0 retornar essa função que irá fazer o map, length === 0 retornar outra coisa
   }
 
+
   return (
     <Wrapper>
       <Header isHome={isHome}></Header>
-      <Main></Main>
+      <Main>
+        {products && products.map( (item, key) => (
+          <Product figure={item.figure} price={item.price} title={item.title} key={key} />
+        ) )}
+      </Main>
       <Footer>
         <nav>
           <IoIosArrowBack

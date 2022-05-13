@@ -4,8 +4,8 @@ import styled from "styled-components";
 function Product(props) {
   return (
     <ProductContainer>
-      <img src="https://st4.depositphotos.com/15923508/26479/i/600/depositphotos_264796206-stock-photo-nike-dunk-low-premium-sb.jpg" />
-      <span>R$ 700,00</span>
+      <img src={props.figure} alt="product" />
+      <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
       <button>Adicionar</button>
     </ProductContainer>
   );
