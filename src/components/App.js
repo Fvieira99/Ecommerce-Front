@@ -5,6 +5,7 @@ import { createGlobalStyle } from "styled-components";
 import MainPage from "../pages/MainPage";
 import SignUpPage from "../pages/SignUpPage";
 import SignInPage from "../pages/SignInPage";
+import ProductPage from "../pages/SingleProductPage";
 
 export default function App() {
   return (
@@ -12,7 +13,7 @@ export default function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />}></Route>
-        <Route path="/product/:productName"></Route>
+        <Route path="/product/:productName" element={<ProductPage />}></Route>
         <Route path="/cart"></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/signin" element={<SignInPage />}></Route>

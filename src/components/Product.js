@@ -1,11 +1,20 @@
 //Dependencies
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 
 function Product(props) {
+  const navigate = useNavigate();
+
   return (
-    <ProductContainer>
+    <ProductContainer onClick={() => navigate(`/product/${props.slug}`)}>
       <img src={props.figure} alt="product" />
-      <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
+      <span>{props.title}</span>
+      <span>
+        {props.price.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL"
+        })}
+      </span>
       <button>Adicionar</button>
     </ProductContainer>
   );
@@ -13,7 +22,7 @@ function Product(props) {
 
 const ProductContainer = styled.div`
   width: 48%;
-  height: 240px;
+  height: 260px;
   border: 1px solid black;
   display: flex;
   flex-direction: column;

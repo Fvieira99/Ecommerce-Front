@@ -5,12 +5,15 @@ import { GoThreeBars } from "react-icons/go";
 import { BsArrowBarLeft } from "react-icons/bs";
 
 export default function Header(props) {
-  const { isHome } = props;
+  const { isHome, setShowDashboard } = props;
   return (
     <StyledHeader>
       <HeaderWrapper>
         {isHome ? (
-          <GoThreeBars className="icon" />
+          <GoThreeBars
+            className="icon"
+            onClick={() => setShowDashboard(true)}
+          />
         ) : (
           <BsArrowBarLeft className="icon" />
         )}
