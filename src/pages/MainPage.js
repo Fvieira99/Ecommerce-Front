@@ -14,7 +14,7 @@ export default function MainPage() {
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(2);
   const [products, setProducts] = useState(null);
-
+  
   useEffect(() => {
     getProducts(page)
       .then(response => {
@@ -33,7 +33,7 @@ export default function MainPage() {
       <Header isHome={isHome}></Header>
       <Main>
         {products && products.map( (item, key) => (
-          <Product figure={item.figure} price={item.price} title={item.title} key={key} />
+          <Product id={item._id} figure={item.figure} price={item.price} title={item.title} key={key} />
         ) )}
       </Main>
       <Footer>
