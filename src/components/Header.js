@@ -6,6 +6,7 @@ import { GoThreeBars } from "react-icons/go";
 import { BsArrowBarLeft } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { AppEcommerceContext } from "../context/CartContext";
+import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router";
 
 export default function Header(props) {
@@ -91,6 +92,7 @@ export default function Header(props) {
                         currency: "BRL"
                       })} 
                 </span>
+              <Link to="/checkout" className="checkout">Verificar</Link>
             </CardInfo>
           </ModalProducts>
         </OpenMenu>
@@ -188,7 +190,7 @@ const CardProductDetails = styled.div`
 
 const ProductsArea = styled.div`
   width: 100%;
-  height: 95%;
+  height: 90%;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -214,5 +216,14 @@ const CardInfo = styled.div`
   width: 100%;
   height: 10%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
+
+  .checkout {
+    text-decoration: none;
+    background-color: rgb(193 193 193);
+    padding: 10px;
+    color: #fff;
+  }
 `
