@@ -1,5 +1,6 @@
 export const initialState = {
- cart: []
+ cart: [],
+ price: 0
 }
 
 export const useReducerEcommerce = (state = initialState, action) => {
@@ -8,6 +9,8 @@ export const useReducerEcommerce = (state = initialState, action) => {
      return {...state, cart: [...state.cart, action.payload.product] }
     case 'deleted':
       return {...state, cart: action.payload.products }
+    case 'addPrice':
+      return { ...state, price: action.payload.price }
     default:
      return state
   }

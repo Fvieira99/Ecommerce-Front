@@ -12,7 +12,9 @@ function Product(props) {
   const { state, dispatch } = useContext(AppEcommerceContext)
 
   const addProduct = (product) => {
+    console.log(product.price)
     dispatch({ type: 'addProduct', payload: { product } })
+    dispatch({ type: 'addPrice', payload: { price: product.price + state.price } })
   }
 
 
