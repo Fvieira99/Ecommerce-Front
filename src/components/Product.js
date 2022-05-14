@@ -1,12 +1,22 @@
+import { useContext } from 'react'; 
+
 //Dependencies
 import styled from "styled-components";
+import { AppEcommerceContext } from '../context/CartContext'
 
 function Product(props) {
+
+  const { state, dispatch } = useContext(AppEcommerceContext)
+
+  const addProduct = (product) => {
+    dispatch({ type: 'addProduct', payload: { product } })
+  }
+
   return (
     <ProductContainer>
       <img src={props.figure} alt="product" />
       <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
-      <button>Adicionar</button>
+      <button onClick={() => addProduct({id: props.id, figure: props.figure, price: props.price, title: props.title})}>Adicionar</button>
     </ProductContainer>
   );
 }
