@@ -16,11 +16,12 @@ export default function ProductPage() {
 
   const { productName } = useParams();
 
-  const { dispatch } = useContext(AppEcommerceContext)
+  const { state, dispatch } = useContext(AppEcommerceContext)
 
 
   const addProduct = (product) => {
     dispatch({ type: 'addProduct', payload: { product } })
+    dispatch({ type: 'addPrice', payload: { price: product.price +  state.price }})
   }
 
 
