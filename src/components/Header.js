@@ -1,5 +1,5 @@
 //Dependencies
-import { useContext, useEffect, useState, useRef } from 'react'
+import { useContext, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoThreeBars } from "react-icons/go";
@@ -11,15 +11,20 @@ import { useNavigate } from "react-router";
 export default function Header(props) {
   const { isHome, setShowDashboard } = props;
 
-  const cart = useRef(null)
- 
-  const { state, dispatch } = useContext(AppEcommerceContext)
+  const cart = useRef(null);
 
-  const [cartModal, setCartModal] = useState(false)
+  const { state, dispatch } = useContext(AppEcommerceContext);
 
   const openCard = (e) => {
      e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
   }
+  const [cartModal, setCartModal] = useState(false);
+
+  const openCard = e => {
+    e.currentTarget.contains(cart.current)
+      ? setCartModal(true)
+      : setCartModal(false);
+  };
 
   const deleteProduct = id => {
     const deleted = state.cart.filter(item => item.id !== id);
@@ -69,6 +74,39 @@ export default function Header(props) {
             <span>Total: {state.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
           </CardInfo>
         </ModalProducts>
+        <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
+        <OpenMenu onMouseOver={e => openCard(e)}>
+          <div className="cart-container">
+            <AiOutlineShoppingCart id="cart" />
+            <span>{state.cart.length}</span>
+          </div>
+          <ModalProducts
+            style={{ display: cartModal ? "block" : "none" }}
+            className="card-modal"
+            ref={cart}
+            onMouseOut={() => setCartModal(false)}
+          >
+            {state.cart &&
+              state.cart.map((item, key) => (
+                <CardProduct key={key}>
+                  <img src={item.figure} alt="product" />
+                  <CardProductDetails>
+                    <span>{item.title}</span>
+                    <span>
+                      {item.price.toLocaleString("pt-br", {
+                        style: "currency",
+                        currency: "BRL"
+                      })}
+                    </span>
+                  </CardProductDetails>
+                  <AiOutlineClose
+                    size={40}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => deleteProduct(item.id)}
+                  />
+                </CardProduct>
+              ))}
+          </ModalProducts>
         </OpenMenu>
       </HeaderWrapper>
     </StyledHeader>
@@ -87,8 +125,6 @@ const StyledHeader = styled.header`
   .icon {
     font-size: 25px;
   }
-
- 
 `;
 
 const HeaderWrapper = styled.div`
@@ -112,8 +148,6 @@ const HeaderWrapper = styled.div`
     #cart {
       font-size: 25px;
     }
-
-
 
     span {
       display: flex;
@@ -179,7 +213,7 @@ const CardProductDetails = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 25px;
-`
+`;
 const OpenMenu = styled.div`
   // &:hover > .card-modal {
   //   display: block;
@@ -216,3 +250,4 @@ const CardInfo = styled.div`
   display: flex;
   align-items: center;
 `
+`;
