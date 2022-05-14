@@ -4,16 +4,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 //Components
 import Header from "../components/Header";
-import Button from "../components/Button";
 //Service
 import { getSingleProduct } from "../service/API";
-
-// const product = {
-//   figure:
-//     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkFdgP49FKy_SwafbE_vRbriF6R7u69njBLN12RlB7PA&s",
-//   title: "Nike Dunk Low",
-//   price: 700
-// };
 
 export default function ProductPage() {
   const [isHome, setIsHome] = useState(false);
@@ -44,6 +36,8 @@ export default function ProductPage() {
       </>
     );
   }
+
+  console.log(product);
 
   return (
     <Wrapper>
