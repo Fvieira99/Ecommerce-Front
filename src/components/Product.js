@@ -2,15 +2,12 @@ import { useContext } from 'react';
 
 //Dependencies
 import styled from "styled-components";
-
 import { useNavigate } from "react-router";
-
-function Product(props) {
-  const navigate = useNavigate();
-
 import { AppEcommerceContext } from '../context/CartContext'
 
 function Product(props) {
+
+  const navigate = useNavigate();
 
   const { state, dispatch } = useContext(AppEcommerceContext)
 
