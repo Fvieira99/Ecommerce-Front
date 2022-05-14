@@ -1,23 +1,26 @@
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import Header from "../components/Header";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { AppEcommerceContext } from "../context/CartContext";
+import { order } from "../service/API";
+import { useNavigate } from 'react-router-dom'
 
 //FIX ME
 
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [email, setEmail] = useState(null);
-  const { state, dispatch } = useContext(AppEcommerceContext);
+  const { state } = useContext(AppEcommerceContext);
+  const navigate = useNavigate()
 
   function showProducts() {
     return state.cart.map(product => {
       return (
         <ProductContainer>
-          <img src={product.figure} alt="product" />
+          <img src={product.figure} alt="product" style={{ width: 100, height: 100 }} />
           <ProductDetails>
             <span>{product.title}</span>
             <span>
@@ -32,12 +35,29 @@ export default function CheckoutPage() {
     });
   }
 
+  async function handleSubit(e) {
+    e.preventDefault()
+    try {
+      await order({
+        product: state.cart || JSON.parse(localStorage.getItem('cart')).cart,
+        payment: paymentMethod,
+        total_payment: state.price || localStorage.getItem('cart').price
+      })
+    } catch (error) {
+      alert(error.response)
+    }
+  }
+
+  useEffect(() => {
+   !localStorage.getItem('token') && navigate('/signin')
+  })
+
   return (
     <Wrapper>
       <Header></Header>
       <CheckoutContainer>
         <h3>Checkout</h3>
-        <UserInfo id="form">
+        <UserInfo id="form" onSubmit={handleSubit} method="post">
           <span>Olá, Fulano</span>
           <label for="email">Confirme seu email:</label>
           <input
@@ -65,7 +85,7 @@ export default function CheckoutPage() {
         {state.cart.length !== 0 ? showProducts() : <></>}
         <Total>
           <b>TOTAL</b>
-          <span>Valor Somado</span>
+          <span>{state.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
         </Total>
         <Button form="form">Finalizar Compra</Button>
       </CheckoutContainer>
@@ -97,6 +117,7 @@ const CheckoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 40px;
 `;
 
 const UserInfo = styled.form`

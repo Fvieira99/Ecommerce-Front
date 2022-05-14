@@ -22,3 +22,8 @@ export function getSingleProduct(slug) {
   const promise = axios.get(`${BASE_URL}/product/${slug}`);
   return promise;
 }
+
+export function order(data) {
+  const promise = axios.post(`${BASE_URL}/order`, data)
+  return promise
+}
