@@ -16,7 +16,7 @@ export default function ProductPage() {
 
   const { productName } = useParams();
 
-  const { state, dispatch } = useContext(AppEcommerceContext)
+  const { dispatch } = useContext(AppEcommerceContext)
 
 
   const addProduct = (product) => {

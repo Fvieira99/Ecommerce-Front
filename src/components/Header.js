@@ -1,5 +1,5 @@
 //Dependencies
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoThreeBars } from "react-icons/go";
@@ -11,7 +11,8 @@ export default function Header(props) {
 
   const { isHome, setShowDashboard } = props;
 
-
+  const cart = useRef(null)
+ 
   const { state, dispatch } = useContext(AppEcommerceContext)
 
   const [cartModal, setCartModal] = useState(false)
@@ -19,6 +20,10 @@ export default function Header(props) {
   const deleteProduct = (id) => {
     const deleted = state.cart.filter( item => item.id !== id )
     dispatch({ type: 'deleted', payload: { products: deleted } })
+  }
+  const openCard = (e) => {
+    console.log(e.currentTarget.contains(cart.current))
+     e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
   }
 
   useEffect(() => {
@@ -37,11 +42,12 @@ export default function Header(props) {
           <BsArrowBarLeft className="icon" />
         )}
         <h1>Shoes&Shoes</h1>
-        <div className="cart-container" onMouseOver={() => setCartModal(!cartModal)}>
+        <OpenMenu onMouseOver={(e) => openCard(e)}>
+        <div className="cart-container" >
           <AiOutlineShoppingCart id="cart" />
           <span>{state.cart.length}</span>
         </div>
-        <ModalProducts style={{ display: cartModal ? 'block' : 'node' }}>
+        <ModalProducts style={{ display: cartModal ? 'block' : 'none' }} className="card-modal" ref={cart} onMouseOut={() => setCartModal(false)}>
           {state.cart && state.cart.map( (item, key) => (
             <CardProduct key={key}>
               <img src={item.figure} alt="product" />
@@ -53,6 +59,7 @@ export default function Header(props) {
             </CardProduct>
           ) )}
         </ModalProducts>
+        </OpenMenu>
       </HeaderWrapper>
     </StyledHeader>
   );
@@ -70,6 +77,8 @@ const StyledHeader = styled.header`
   .icon {
     font-size: 25px;
   }
+
+ 
 `;
 
 const HeaderWrapper = styled.div`
@@ -93,6 +102,8 @@ const HeaderWrapper = styled.div`
     #cart {
       font-size: 25px;
     }
+
+
 
     span {
       display: flex;
@@ -160,4 +171,9 @@ const CardProductDetails = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 25px;
+`
+const OpenMenu = styled.div`
+  // &:hover > .card-modal {
+  //   display: block;
+  // }
 `
