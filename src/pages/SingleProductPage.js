@@ -1,7 +1,9 @@
 //Dependencies
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router";
+import { AppEcommerceContext } from '../context/CartContext'
+
 //Components
 import Header from "../components/Header";
 //Service
@@ -13,6 +15,14 @@ export default function ProductPage() {
   const navigate = useNavigate();
 
   const { productName } = useParams();
+
+  const { state, dispatch } = useContext(AppEcommerceContext)
+
+
+  const addProduct = (product) => {
+    dispatch({ type: 'addProduct', payload: { product } })
+  }
+
 
   useEffect(() => {
     getSingleProduct(productName)
@@ -45,7 +55,7 @@ export default function ProductPage() {
       <SingleProduct>
         {product ? showSingleProduct() : "Esse produto não existe"}
       </SingleProduct>
-      <button>Adicionar ao carrinho</button>
+      <button onClick={() => addProduct(product)} >Adicionar ao carrinho</button>
     </Wrapper>
   );
 }
