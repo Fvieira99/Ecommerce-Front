@@ -47,8 +47,6 @@ export default function ProductPage() {
     );
   }
 
-  console.log(product);
-
   return (
     <Wrapper>
       <Header isHome={isHome}></Header>
