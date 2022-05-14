@@ -7,6 +7,8 @@ import { ThreeDots } from "react-loader-spinner";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import Button from "../components/Button";
+//Services
+import { signIn } from "../service/API";
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,11 +23,21 @@ export default function SignInPage() {
 
   function handleSignUp(e) {
     e.preventDefault();
+
+    signIn()
+      .then(response => {
+        setIsLoading(false);
+        navigate("/");
+      })
+      .catch(error => {
+        setIsLoading(false);
+        console.log(error);
+      });
   }
 
   return (
     <Wrapper>
-      <h1>Shoes&Shoes</h1>
+      <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
       <Form onSubmit={handleSignUp}>
         <Input
           onChange={e => setUser({ ...user, email: e.target.value })}

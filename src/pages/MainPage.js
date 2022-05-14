@@ -4,17 +4,21 @@ import { useState, useEffect } from "react";
 //Components
 import Header from "../components/Header";
 import Product from "../components/Product";
+import Dashboard from "../components/Dashboard";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+//Service
 import { getProducts } from "../service/API";
 
 export default function MainPage() {
   // Buscar no backend a quantidade de itens e dividir pelo limite de itens para
-  // descobrir a quantidade de paginas e receber no front
+  // descobrir a quantidade limite de paginas e receber no front usando o setPageLimit
   const [isHome, setIsHome] = useState(true);
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(2);
   const [products, setProducts] = useState(null);
-  
+
+  const [showDashboard, setShowDashboard] = useState(false);
+
   useEffect(() => {
     getProducts(page)
       .then(response => {
@@ -23,54 +27,66 @@ export default function MainPage() {
       .catch(error => console.log(error));
   }, []);
 
-  function showProducts() {
-    // Criar Produto e fazer ternário no componente Main se length > 0 retornar essa função que irá fazer o map, length === 0 retornar outra coisa
-  }
-
-
   return (
-    <Wrapper>
-      <Header isHome={isHome}></Header>
-      <Main>
-        {products && products.map( (item, key) => (
-          <Product id={item._id} figure={item.figure} price={item.price} title={item.title} key={key} />
-        ) )}
-      </Main>
-      <Footer>
-        <nav>
-          <IoIosArrowBack
-            className="arrow"
-            pointerEvents={page === 1 ? "none" : "auto"}
-            onClick={() => {
-              if (page !== 1) {
-                setPage(page - 1);
-                getProducts(page)
-                  .then(response => {
-                    setProducts(response.data);
-                  })
-                  .catch(error => console.log(error));
-              }
-            }}
-          />
-          {/* Criar função handleProducts que atualiza a pagina ao clicar na*/}
-          <span>{page}</span>
-          <IoIosArrowForward
-            className="arrow"
-            pointerEvents={page === pageLimit ? "none" : "auto"}
-            onClick={() => {
-              if (page !== pageLimit) {
-                setPage(page + 1);
-                getProducts(page)
-                  .then(response => {
-                    setProducts(response.data);
-                  })
-                  .catch(error => console.log(error));
-              }
-            }}
-          />
-        </nav>
-      </Footer>
-    </Wrapper>
+    <>
+      {showDashboard ? (
+        <Dashboard
+          setShowDashboard={setShowDashboard}
+          showDashboard={showDashboard}
+        />
+      ) : (
+        <></>
+      )}
+      <Wrapper showDashboard={showDashboard}>
+        <Header isHome={isHome} setShowDashboard={setShowDashboard} />
+        <Main>
+          {products &&
+            products.map((item, key) => (
+              <Product
+                figure={item.figure}
+                price={item.price}
+                title={item.title}
+                slug={item.slug}
+                key={key}
+              />
+            ))}
+        </Main>
+        <Footer>
+          <nav>
+            <IoIosArrowBack
+              className="arrow"
+              pointerEvents={page === 1 ? "none" : "auto"}
+              onClick={() => {
+                if (page !== 1) {
+                  setPage(page - 1);
+                  getProducts(page)
+                    .then(response => {
+                      setProducts(response.data);
+                    })
+                    .catch(error => console.log(error));
+                }
+              }}
+            />
+            <span>{page}</span>
+            <IoIosArrowForward
+              className="arrow"
+              pointerEvents={page === pageLimit ? "none" : "auto"}
+              onClick={() => {
+                if (page !== pageLimit) {
+                  setPage(page + 1);
+                  getProducts(page)
+                    .then(response => {
+                      setProducts(response.data);
+                    })
+                    .catch(error => console.log(error));
+                }
+              }}
+            />
+          </nav>
+        </Footer>
+      </Wrapper>
+    </>
+
   );
 }
 

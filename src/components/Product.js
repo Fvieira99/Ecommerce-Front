@@ -2,9 +2,12 @@ import { useContext } from 'react';
 
 //Dependencies
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 import { AppEcommerceContext } from '../context/CartContext'
 
 function Product(props) {
+
+  const navigate = useNavigate();
 
   const { state, dispatch } = useContext(AppEcommerceContext)
 
@@ -12,9 +15,11 @@ function Product(props) {
     dispatch({ type: 'addProduct', payload: { product } })
   }
 
+
   return (
-    <ProductContainer>
+    <ProductContainer onClick={() => navigate(`/product/${props.slug}`)}>
       <img src={props.figure} alt="product" />
+      <span>{props.title}</span>
       <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
       <button onClick={() => addProduct({id: props.id, figure: props.figure, price: props.price, title: props.title})}>Adicionar</button>
     </ProductContainer>
@@ -23,7 +28,7 @@ function Product(props) {
 
 const ProductContainer = styled.div`
   width: 48%;
-  height: 240px;
+  height: 260px;
   border: 1px solid black;
   display: flex;
   flex-direction: column;

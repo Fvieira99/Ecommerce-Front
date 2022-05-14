@@ -9,6 +9,9 @@ import { AppEcommerceContext } from '../context/CartContext'
 
 export default function Header(props) {
 
+  const { isHome, setShowDashboard } = props;
+
+
   const { state, dispatch } = useContext(AppEcommerceContext)
 
   const [cartModal, setCartModal] = useState(false)
@@ -22,13 +25,14 @@ export default function Header(props) {
 
   }, [state])
 
-
-  const { isHome } = props;
   return (
     <StyledHeader>
       <HeaderWrapper>
         {isHome ? (
-          <GoThreeBars className="icon" />
+          <GoThreeBars
+            className="icon"
+            onClick={() => setShowDashboard(true)}
+          />
         ) : (
           <BsArrowBarLeft className="icon" />
         )}
