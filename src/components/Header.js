@@ -11,7 +11,6 @@ import { useNavigate } from "react-router";
 export default function Header(props) {
   const { isHome, setShowDashboard } = props;
 
-
   const cart = useRef(null)
  
   const { state, dispatch } = useContext(AppEcommerceContext)
@@ -23,12 +22,10 @@ export default function Header(props) {
      e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
   }
 
-
   const deleteProduct = id => {
     const deleted = state.cart.filter(item => item.id !== id);
     dispatch({ type: "deleted", payload: { products: deleted } });
   };
-
 
   useEffect(() => {}, [state]);
 
