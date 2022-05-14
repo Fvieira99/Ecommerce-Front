@@ -6,6 +6,8 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { AppEcommerceContext } from "../context/CartContext";
 
+//FIX ME
+
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [email, setEmail] = useState(null);
