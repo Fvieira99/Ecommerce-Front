@@ -15,6 +15,9 @@ export default function Header(props) {
 
   const { state, dispatch } = useContext(AppEcommerceContext);
 
+  const openCard = (e) => {
+     e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
+  }
   const [cartModal, setCartModal] = useState(false);
 
   const openCard = e => {
@@ -22,11 +25,15 @@ export default function Header(props) {
       ? setCartModal(true)
       : setCartModal(false);
   };
-  console.log(state);
 
   const deleteProduct = id => {
     const deleted = state.cart.filter(item => item.id !== id);
+    let price = 0;
+    deleted.forEach(  item => {
+      price += item.price
+    } )
     dispatch({ type: "deleted", payload: { products: deleted } });
+    dispatch({ type: 'addPrice', payload: { price: price }})
   };
 
   useEffect(() => {}, [state]);
@@ -44,6 +51,29 @@ export default function Header(props) {
         ) : (
           <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
+        <h1>Shoes&Shoes</h1>
+        <OpenMenu onMouseOver={(e) => openCard(e)}>
+        <div className="cart-container" >
+          <AiOutlineShoppingCart id="cart" />
+          <span>{state.cart.length}</span>
+        </div>
+        <ModalProducts style={{ display: cartModal ? 'block' : 'none' }} className="card-modal" ref={cart} onMouseOut={() => setCartModal(false)}>
+         <ProductsArea>
+          {state.cart && state.cart.map( (item, key) => (
+            <CardProduct key={key}>
+              <img src={item.figure} alt="product" />
+              <CardProductDetails>
+                <span>{item.title}</span>
+                <span>{item.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
+              </CardProductDetails>
+              <AiOutlineClose size={40} style={{ cursor: 'pointer'  }} onClick={() => deleteProduct(item.id)} />
+            </CardProduct>
+          ) )}
+          </ProductsArea>
+          <CardInfo>
+            <span>Total: {state.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
+          </CardInfo>
+        </ModalProducts>
         <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
         <OpenMenu onMouseOver={e => openCard(e)}>
           <div className="cart-container">
@@ -142,29 +172,28 @@ const ModalProducts = styled.div`
   height: 400px;
   padding: 30px 10px;
   position: absolute;
-  overflow-y: auto;
   background: #fff;
   right: 30px;
   top: 60px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-  &::-webkit-scrollbar {
-    background-color: transparent;
-    width: 6px;
-    height: 7px;
-  }
-  &::-webkit-scrollbar-button {
-    display: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: rgb(186, 186, 192);
-    border-radius: 6px;
-    border: 5px solid transparent;
-  }
-  &::-webkit-scrollbar-track {
-    border-radius: 6px;
-    background-color: rgba(0, 0, 0, 0.03);
-  }
+  // &::-webkit-scrollbar {
+  //   background-color: transparent;
+  //   width: 6px;
+  //   height: 7px;
+  // }
+  // &::-webkit-scrollbar-button {
+  //   display: none;
+  // }
+  // &::-webkit-scrollbar-thumb {
+  //   background-color: rgb(186, 186, 192);
+  //   border-radius: 6px;
+  //   border: 5px solid transparent;
+  // }
+  // &::-webkit-scrollbar-track {
+  //   border-radius: 6px;
+  //   background-color: rgba(0, 0, 0, 0.03);
+  // }
 `;
 
 const CardProduct = styled.div`
@@ -189,4 +218,36 @@ const OpenMenu = styled.div`
   // &:hover > .card-modal {
   //   display: block;
   // }
+`
+
+const ProductsArea = styled.div`
+  width: 100%;
+  height: 95%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 6px;
+    height: 7px;
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(186, 186, 192);
+    border-radius: 6px;
+    border: 5px solid transparent;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+` 
+
+const CardInfo = styled.div`
+  width: 100%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+`
 `;
