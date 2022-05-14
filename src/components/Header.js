@@ -44,7 +44,7 @@ export default function Header(props) {
         ) : (
           <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
-        <h1>Shoes&Shoes</h1>
+        <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
         <OpenMenu onMouseOver={e => openCard(e)}>
           <div className="cart-container">
             <AiOutlineShoppingCart id="cart" />
