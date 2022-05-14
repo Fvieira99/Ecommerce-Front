@@ -43,6 +43,7 @@ export default function MainPage() {
           {products &&
             products.map((item, key) => (
               <Product
+                id={item._id}
                 figure={item.figure}
                 price={item.price}
                 title={item.title}

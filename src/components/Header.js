@@ -18,9 +18,9 @@ export default function Header(props) {
   const [cartModal, setCartModal] = useState(false)
 
   const openCard = (e) => {
-    console.log(e.currentTarget.contains(cart.current))
      e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
   }
+  console.log(state)
 
   const deleteProduct = id => {
     const deleted = state.cart.filter(item => item.id !== id);
