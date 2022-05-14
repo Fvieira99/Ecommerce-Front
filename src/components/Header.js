@@ -1,29 +1,28 @@
 //Dependencies
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoThreeBars } from "react-icons/go";
 import { BsArrowBarLeft } from "react-icons/bs";
-import { AiOutlineClose } from 'react-icons/ai'
-import { AppEcommerceContext } from '../context/CartContext'
+import { AiOutlineClose } from "react-icons/ai";
+import { AppEcommerceContext } from "../context/CartContext";
+import { useNavigate } from "react-router";
 
 export default function Header(props) {
-
   const { isHome, setShowDashboard } = props;
 
+  const { state, dispatch } = useContext(AppEcommerceContext);
 
-  const { state, dispatch } = useContext(AppEcommerceContext)
+  const [cartModal, setCartModal] = useState(false);
 
-  const [cartModal, setCartModal] = useState(false)
+  const deleteProduct = id => {
+    const deleted = state.cart.filter(item => item.id !== id);
+    dispatch({ type: "deleted", payload: { products: deleted } });
+  };
 
-  const deleteProduct = (id) => {
-    const deleted = state.cart.filter( item => item.id !== id )
-    dispatch({ type: 'deleted', payload: { products: deleted } })
-  }
+  useEffect(() => {}, [state]);
 
-  useEffect(() => {
-
-  }, [state])
+  const navigate = useNavigate();
 
   return (
     <StyledHeader>
@@ -34,24 +33,37 @@ export default function Header(props) {
             onClick={() => setShowDashboard(true)}
           />
         ) : (
-          <BsArrowBarLeft className="icon" />
+          <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
-        <h1>Shoes&Shoes</h1>
-        <div className="cart-container" onMouseOver={() => setCartModal(!cartModal)}>
+        <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
+        <div
+          className="cart-container"
+          onMouseOver={() => setCartModal(!cartModal)}
+        >
           <AiOutlineShoppingCart id="cart" />
           <span>{state.cart.length}</span>
         </div>
-        <ModalProducts style={{ display: cartModal ? 'block' : 'node' }}>
-          {state.cart && state.cart.map( (item, key) => (
-            <CardProduct key={key}>
-              <img src={item.figure} alt="product" />
-              <CardProductDetails>
-                <span>{item.title}</span>
-                <span>{item.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
-              </CardProductDetails>
-              <AiOutlineClose size={40} style={{ cursor: 'pointer'  }} onClick={() => deleteProduct(item.id)} />
-            </CardProduct>
-          ) )}
+        <ModalProducts style={{ display: cartModal ? "block" : "node" }}>
+          {state.cart &&
+            state.cart.map((item, key) => (
+              <CardProduct key={key}>
+                <img src={item.figure} alt="product" />
+                <CardProductDetails>
+                  <span>{item.title}</span>
+                  <span>
+                    {item.price.toLocaleString("pt-br", {
+                      style: "currency",
+                      currency: "BRL"
+                    })}
+                  </span>
+                </CardProductDetails>
+                <AiOutlineClose
+                  size={40}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => deleteProduct(item.id)}
+                />
+              </CardProduct>
+            ))}
         </ModalProducts>
       </HeaderWrapper>
     </StyledHeader>
@@ -112,8 +124,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const ModalProducts = styled.div`
-
-display: none;
+  display: none;
   width: 300px;
   height: 400px;
   padding: 30px 10px;
@@ -128,20 +139,20 @@ display: none;
     background-color: transparent;
     width: 6px;
     height: 7px;
-}
-&::-webkit-scrollbar-button {
+  }
+  &::-webkit-scrollbar-button {
     display: none;
-}
-&::-webkit-scrollbar-thumb {
+  }
+  &::-webkit-scrollbar-thumb {
     background-color: rgb(186, 186, 192);
     border-radius: 6px;
     border: 5px solid transparent;
-}
-&::-webkit-scrollbar-track {
+  }
+  &::-webkit-scrollbar-track {
     border-radius: 6px;
     background-color: rgba(0, 0, 0, 0.03);
-}
-`
+  }
+`;
 
 const CardProduct = styled.div`
   width: 100%;
@@ -153,11 +164,11 @@ const CardProduct = styled.div`
   }
   align-items: center;
   margin-bottom: 30px;
-`
+`;
 
 const CardProductDetails = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   margin-left: 25px;
-`
+`;

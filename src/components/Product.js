@@ -1,27 +1,45 @@
-import { useContext } from 'react'; 
+import { useContext } from "react";
 
 //Dependencies
 import styled from "styled-components";
 import { useNavigate } from "react-router";
-import { AppEcommerceContext } from '../context/CartContext'
+import { AppEcommerceContext } from "../context/CartContext";
 
 function Product(props) {
-
   const navigate = useNavigate();
 
-  const { state, dispatch } = useContext(AppEcommerceContext)
+  const { state, dispatch } = useContext(AppEcommerceContext);
 
-  const addProduct = (product) => {
-    dispatch({ type: 'addProduct', payload: { product } })
-  }
-
+  const addProduct = product => {
+    dispatch({ type: "addProduct", payload: { product } });
+  };
 
   return (
-    <ProductContainer onClick={() => navigate(`/product/${props.slug}`)}>
-      <img src={props.figure} alt="product" />
+    <ProductContainer>
+      <img
+        src={props.figure}
+        alt="product"
+        onClick={() => navigate(`/product/${props.slug}`)}
+      />
       <span>{props.title}</span>
-      <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
-      <button onClick={() => addProduct({id: props.id, figure: props.figure, price: props.price, title: props.title})}>Adicionar</button>
+      <span>
+        {props.price.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL"
+        })}
+      </span>
+      <button
+        onClick={() =>
+          addProduct({
+            id: props.id,
+            figure: props.figure,
+            price: props.price,
+            title: props.title
+          })
+        }
+      >
+        Adicionar
+      </button>
     </ProductContainer>
   );
 }
