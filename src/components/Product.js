@@ -17,8 +17,8 @@ function Product(props) {
 
 
   return (
-    <ProductContainer onClick={() => navigate(`/product/${props.slug}`)}>
-      <img src={props.figure} alt="product" />
+    <ProductContainer >
+      <img src={props.figure} alt="product" onClick={() => navigate(`/product/${props.slug}`)} style={{ cursor: 'pointer' }} />
       <span>{props.title}</span>
       <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
       <button onClick={() => addProduct({id: props.id, figure: props.figure, price: props.price, title: props.title})}>Adicionar</button>
