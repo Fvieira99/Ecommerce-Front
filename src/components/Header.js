@@ -4,12 +4,13 @@ import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoThreeBars } from "react-icons/go";
 import { BsArrowBarLeft } from "react-icons/bs";
-import { AiOutlineClose } from 'react-icons/ai'
-import { AppEcommerceContext } from '../context/CartContext'
+import { AiOutlineClose } from "react-icons/ai";
+import { AppEcommerceContext } from "../context/CartContext";
+import { useNavigate } from "react-router";
 
 export default function Header(props) {
-
   const { isHome, setShowDashboard } = props;
+
 
   const cart = useRef(null)
  
@@ -17,18 +18,21 @@ export default function Header(props) {
 
   const [cartModal, setCartModal] = useState(false)
 
-  const deleteProduct = (id) => {
-    const deleted = state.cart.filter( item => item.id !== id )
-    dispatch({ type: 'deleted', payload: { products: deleted } })
-  }
   const openCard = (e) => {
     console.log(e.currentTarget.contains(cart.current))
      e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
   }
 
-  useEffect(() => {
 
-  }, [state])
+  const deleteProduct = id => {
+    const deleted = state.cart.filter(item => item.id !== id);
+    dispatch({ type: "deleted", payload: { products: deleted } });
+  };
+
+
+  useEffect(() => {}, [state]);
+
+  const navigate = useNavigate();
 
   return (
     <StyledHeader>
@@ -39,7 +43,7 @@ export default function Header(props) {
             onClick={() => setShowDashboard(true)}
           />
         ) : (
-          <BsArrowBarLeft className="icon" />
+          <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
         <h1>Shoes&Shoes</h1>
         <OpenMenu onMouseOver={(e) => openCard(e)}>
@@ -123,8 +127,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const ModalProducts = styled.div`
-
-display: none;
+  display: none;
   width: 300px;
   height: 400px;
   padding: 30px 10px;
@@ -139,20 +142,20 @@ display: none;
     background-color: transparent;
     width: 6px;
     height: 7px;
-}
-&::-webkit-scrollbar-button {
+  }
+  &::-webkit-scrollbar-button {
     display: none;
-}
-&::-webkit-scrollbar-thumb {
+  }
+  &::-webkit-scrollbar-thumb {
     background-color: rgb(186, 186, 192);
     border-radius: 6px;
     border: 5px solid transparent;
-}
-&::-webkit-scrollbar-track {
+  }
+  &::-webkit-scrollbar-track {
     border-radius: 6px;
     background-color: rgba(0, 0, 0, 0.03);
-}
-`
+  }
+`;
 
 const CardProduct = styled.div`
   width: 100%;
@@ -164,7 +167,7 @@ const CardProduct = styled.div`
   }
   align-items: center;
   margin-bottom: 30px;
-`
+`;
 
 const CardProductDetails = styled.div`
   width: 100%;
