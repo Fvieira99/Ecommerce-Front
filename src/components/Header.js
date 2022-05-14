@@ -1,5 +1,5 @@
 //Dependencies
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from 'react'
 import styled from "styled-components";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { GoThreeBars } from "react-icons/go";
@@ -11,9 +11,20 @@ import { useNavigate } from "react-router";
 export default function Header(props) {
   const { isHome, setShowDashboard } = props;
 
-  const { state, dispatch } = useContext(AppEcommerceContext);
+  const cart = useRef(null)
+ 
+  const { state, dispatch } = useContext(AppEcommerceContext)
 
-  const [cartModal, setCartModal] = useState(false);
+  const [cartModal, setCartModal] = useState(false)
+
+  const deleteProduct = (id) => {
+    const deleted = state.cart.filter( item => item.id !== id )
+    dispatch({ type: 'deleted', payload: { products: deleted } })
+  }
+  const openCard = (e) => {
+    console.log(e.currentTarget.contains(cart.current))
+     e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
+  }
 
   const deleteProduct = id => {
     const deleted = state.cart.filter(item => item.id !== id);
@@ -35,6 +46,23 @@ export default function Header(props) {
         ) : (
           <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
+        <h1>Shoes&Shoes</h1>
+        <OpenMenu onMouseOver={(e) => openCard(e)}>
+        <div className="cart-container" >
+          <AiOutlineShoppingCart id="cart" />
+          <span>{state.cart.length}</span>
+        </div>
+        <ModalProducts style={{ display: cartModal ? 'block' : 'none' }} className="card-modal" ref={cart} onMouseOut={() => setCartModal(false)}>
+          {state.cart && state.cart.map( (item, key) => (
+            <CardProduct key={key}>
+              <img src={item.figure} alt="product" />
+              <CardProductDetails>
+                <span>{item.title}</span>
+                <span>{item.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
+              </CardProductDetails>
+              <AiOutlineClose size={40} style={{ cursor: 'pointer'  }} onClick={() => deleteProduct(item.id)} />
+            </CardProduct>
+          ) )}
         <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
         <div
           className="cart-container"
@@ -65,6 +93,7 @@ export default function Header(props) {
               </CardProduct>
             ))}
         </ModalProducts>
+        </OpenMenu>
       </HeaderWrapper>
     </StyledHeader>
   );
@@ -82,6 +111,8 @@ const StyledHeader = styled.header`
   .icon {
     font-size: 25px;
   }
+
+ 
 `;
 
 const HeaderWrapper = styled.div`
@@ -105,6 +136,8 @@ const HeaderWrapper = styled.div`
     #cart {
       font-size: 25px;
     }
+
+
 
     span {
       display: flex;
@@ -171,4 +204,9 @@ const CardProductDetails = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 25px;
+`
+const OpenMenu = styled.div`
+  // &:hover > .card-modal {
+  //   display: block;
+  // }
 `;
