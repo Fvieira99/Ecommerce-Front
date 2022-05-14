@@ -25,9 +25,6 @@ export default function Header(props) {
 
   }, [state])
 
-
-  const { isHome } = props;
-
   return (
     <StyledHeader>
       <HeaderWrapper>
