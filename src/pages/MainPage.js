@@ -16,6 +16,7 @@ export default function MainPage() {
   const [page, setPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(2);
   const [products, setProducts] = useState(null);
+
   const [showDashboard, setShowDashboard] = useState(false);
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function MainPage() {
         </Footer>
       </Wrapper>
     </>
+
   );
 }
 

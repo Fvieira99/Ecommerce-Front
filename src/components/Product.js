@@ -1,21 +1,30 @@
+import { useContext } from 'react'; 
+
 //Dependencies
 import styled from "styled-components";
+
 import { useNavigate } from "react-router";
 
 function Product(props) {
   const navigate = useNavigate();
 
+import { AppEcommerceContext } from '../context/CartContext'
+
+function Product(props) {
+
+  const { state, dispatch } = useContext(AppEcommerceContext)
+
+  const addProduct = (product) => {
+    dispatch({ type: 'addProduct', payload: { product } })
+  }
+
+
   return (
     <ProductContainer onClick={() => navigate(`/product/${props.slug}`)}>
       <img src={props.figure} alt="product" />
       <span>{props.title}</span>
-      <span>
-        {props.price.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL"
-        })}
-      </span>
-      <button>Adicionar</button>
+      <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
+      <button onClick={() => addProduct({id: props.id, figure: props.figure, price: props.price, title: props.title})}>Adicionar</button>
     </ProductContainer>
   );
 }
