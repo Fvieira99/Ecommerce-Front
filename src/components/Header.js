@@ -6,7 +6,7 @@ import { GoThreeBars } from "react-icons/go";
 import { BsArrowBarLeft } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { AppEcommerceContext } from "../context/CartContext";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 
 export default function Header(props) {
@@ -16,21 +16,21 @@ export default function Header(props) {
 
   const { state, dispatch } = useContext(AppEcommerceContext);
 
-  const openCard = (e) => {
-     e.currentTarget.contains(cart.current) ? setCartModal(true) : setCartModal(false)
-  }
+  const openCard = e => {
+    e.currentTarget.contains(cart.current)
+      ? setCartModal(true)
+      : setCartModal(false);
+  };
   const [cartModal, setCartModal] = useState(false);
 
-
-
-  const deleteProduct = id => {
-    const deleted = state.cart.filter(item => item.id !== id);
+  const deleteProduct = key => {
+    const deleted = state.cart.filter((item, index) => index !== key);
     let price = 0;
-    deleted.forEach(  item => {
-      price += item.price
-    } )
+    deleted.forEach(item => {
+      price += item.price;
+    });
     dispatch({ type: "deleted", payload: { products: deleted } });
-    dispatch({ type: 'addPrice', payload: { price: price }})
+    dispatch({ type: "addPrice", payload: { price: price } });
   };
 
   useEffect(() => {}, [state]);
@@ -48,7 +48,6 @@ export default function Header(props) {
         ) : (
           <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
-        <h1>Shoes&Shoes</h1>
         <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
         <OpenMenu onMouseOver={e => openCard(e)}>
           <div className="cart-container">
@@ -62,37 +61,38 @@ export default function Header(props) {
             onMouseOut={() => setCartModal(false)}
           >
             <ProductsArea>
-
-            {state.cart &&
-              state.cart.map((item, key) => (
-                <CardProduct key={key}>
-                  <img src={item.figure} alt="product" />
-                  <CardProductDetails>
-                    <span>{item.title}</span>
-                    <span>
-                      {item.price.toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL"
-                      })}
-                    </span>
-                  </CardProductDetails>
-                  <AiOutlineClose
-                    size={40}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => deleteProduct(item.id)}
-                  />
-                </CardProduct>
-              ))}
-
+              {state.cart &&
+                state.cart.map((item, key) => (
+                  <CardProduct key={key}>
+                    <img src={item.figure} alt="product" />
+                    <CardProductDetails>
+                      <span>{item.title}</span>
+                      <span>
+                        {item.price.toLocaleString("pt-br", {
+                          style: "currency",
+                          currency: "BRL"
+                        })}
+                      </span>
+                    </CardProductDetails>
+                    <AiOutlineClose
+                      size={40}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => deleteProduct(key)}
+                    />
+                  </CardProduct>
+                ))}
             </ProductsArea>
             <CardInfo>
               <span>
-                total: {state.price.toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL"
-                      })} 
-                </span>
-              <Link to="/checkout" className="checkout">Verificar</Link>
+                total:{" "}
+                {state.price.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL"
+                })}
+              </span>
+              <Link to="/checkout" className="checkout">
+                Verificar
+              </Link>
             </CardInfo>
           </ModalProducts>
         </OpenMenu>
@@ -115,7 +115,7 @@ const StyledHeader = styled.header`
   }
 `;
 
-const OpenMenu = styled.div``
+const OpenMenu = styled.div``;
 
 const HeaderWrapper = styled.div`
   width: 90%;
@@ -210,7 +210,7 @@ const ProductsArea = styled.div`
     border-radius: 6px;
     background-color: rgba(0, 0, 0, 0.03);
   }
-` 
+`;
 
 const CardInfo = styled.div`
   width: 100%;
@@ -226,4 +226,4 @@ const CardInfo = styled.div`
     padding: 10px;
     color: #fff;
   }
-`
+`;

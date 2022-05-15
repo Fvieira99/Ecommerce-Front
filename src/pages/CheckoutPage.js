@@ -6,33 +6,35 @@ import Button from "../components/Button";
 import { AppEcommerceContext } from "../context/CartContext";
 import { AiOutlineClose } from "react-icons/ai";
 import { order } from "../service/API";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 //FIX ME
 
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState("");
   const { state, dispatch } = useContext(AppEcommerceContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-
-  const deleteProduct = id => {
-    const deleted = state.cart.filter(item => item.id !== id);
+  const deleteProduct = key => {
+    const deleted = state.cart.filter((item, index) => index !== key);
     let price = 0;
-    deleted.forEach(  item => {
-      price += item.price
-    } )
+    deleted.forEach(item => {
+      price += item.price;
+    });
     dispatch({ type: "deleted", payload: { products: deleted } });
-    dispatch({ type: 'addPrice', payload: { price: price }})
+    dispatch({ type: "addPrice", payload: { price: price } });
   };
 
   function showProducts() {
-    return state.cart.map(product => {
+    return state.cart.map((product, key) => {
       return (
-        <ProductContainer>
-          <img src={product.figure} alt="product" style={{ width: 100, height: 100 }} />
+        <ProductContainer key={key}>
+          <img
+            src={product.figure}
+            alt="product"
+            style={{ width: 100, height: 100 }}
+          />
           <ProductDetails>
             <span>{product.title}</span>
             <span>
@@ -42,44 +44,47 @@ export default function CheckoutPage() {
               })}
             </span>
           </ProductDetails>
-          <AiOutlineClose onClick={() => deleteProduct(product.id)} />
+          <AiOutlineClose onClick={() => deleteProduct(key)} />
         </ProductContainer>
       );
     });
   }
 
-  async function handleSubit(e) {
-    e.preventDefault()
+  async function handleSubmit(e) {
+    e.preventDefault();
     try {
-
-      if(JSON.parse(localStorage.getItem('cart')).cart.length <= 0 || state.cart <= 0) {
-        alert('Você prescisa escolher algum produto!')
-        return
+      if (
+        JSON.parse(localStorage.getItem("cart")).cart.length <= 0 ||
+        state.cart <= 0
+      ) {
+        alert("Você prescisa escolher algum produto!");
+        return;
       }
 
       await order({
-        product: state.cart || JSON.parse(localStorage.getItem('cart')).cart,
+        product: state.cart || JSON.parse(localStorage.getItem("cart")).cart,
         payment: paymentMethod,
-        total_payment: state.price || localStorage.getItem('cart').price
-      })
-      alert('Pedido Finalizado')
-      navigate('/')
+        total_payment: state.price || localStorage.getItem("cart").price
+      });
+      alert("Pedido Finalizado");
+      dispatch({ type: "reset" });
+      navigate("/");
     } catch (error) {
-      alert(error.response.data)
+      alert(error.response.data);
     }
   }
 
   useEffect(() => {
-   !localStorage.getItem('token') && navigate('/signin')
-  })
+    !localStorage.getItem("token") && navigate("/signin");
+  });
 
   return (
     <Wrapper>
       <Header></Header>
       <CheckoutContainer>
         <h3>Checkout</h3>
-        <UserInfo id="form" onSubmit={handleSubit} method="post">
-          <span>Olá, Fulano</span>
+        <UserInfo id="form" onSubmit={handleSubmit} method="post">
+          <span>Olá, {localStorage.getItem("name")}</span>
           <label for="email">Confirme seu email:</label>
           <input
             name="email"
@@ -108,7 +113,12 @@ export default function CheckoutPage() {
         </ProductCart>
         <Total>
           <b>TOTAL</b>
-          <span>{state.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
+          <span>
+            {state.price.toLocaleString("pt-br", {
+              style: "currency",
+              currency: "BRL"
+            })}
+          </span>
         </Total>
         <Button form="form">Finalizar Compra</Button>
       </CheckoutContainer>
@@ -122,7 +132,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing:border-box;
+  box-sizing: border-box;
 
   h3 {
     margin-top: 30px;
@@ -250,4 +260,4 @@ const Total = styled.div`
 const ProductCart = styled.div`
   width: 100%;
   max-width: 300px;
-`
+`;

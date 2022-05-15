@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "https://ecommerce-carax.herokuapp.com";
-// const BASE_URL = "http://localhost:5555";
+// const BASE_URL = "http://localhost:5500";
 
 export function signUp(body) {
   const promise = axios.post(`${BASE_URL}/signup`, body);
@@ -24,8 +24,10 @@ export function getSingleProduct(slug) {
 }
 
 export function order(data) {
-  const promise = axios.post(`${BASE_URL}/order`, data, { headers: {
-    'authorization': `Bearer ${localStorage.getItem('token')}`
-  } })
-  return promise
+  const promise = axios.post(`${BASE_URL}/order`, data, {
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
+  return promise;
 }

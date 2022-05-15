@@ -4,13 +4,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function Dashboard(props) {
-  const [logged, setLogged] = useState(false);
   const { setShowDashboard, showDashboard } = props;
 
   const navigate = useNavigate();
 
   function showOptionsOrName() {
-    if (!logged) {
+    if (!localStorage.getItem("token")) {
       return (
         <>
           <span onClick={() => navigate("/signin")}>Sign In</span>
@@ -18,7 +17,21 @@ export default function Dashboard(props) {
         </>
       );
     }
-    return <span>Olá, Fulano</span>;
+    return (
+      <>
+        <span>Olá, {localStorage.getItem("name")}</span>
+        <span
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            setShowDashboard(false);
+            navigate("/");
+          }}
+        >
+          Logout
+        </span>
+      </>
+    );
   }
 
   return (
