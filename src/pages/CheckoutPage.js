@@ -38,13 +38,21 @@ export default function CheckoutPage() {
   async function handleSubit(e) {
     e.preventDefault()
     try {
+
+      if(JSON.parse(localStorage.getItem('cart')).cart.length <= 0 || state.cart <= 0) {
+        alert('Você prescisa escolher algum produto!')
+        return
+      }
+
       await order({
         product: state.cart || JSON.parse(localStorage.getItem('cart')).cart,
         payment: paymentMethod,
         total_payment: state.price || localStorage.getItem('cart').price
       })
+      alert('Pedido Finalizado')
+      navigate('/')
     } catch (error) {
-      alert(error.response)
+      alert(error.response.data)
     }
   }
 

@@ -14,9 +14,7 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({
     email: "",
-    name: "",
     password: "",
-    passwordConfirmation: ""
   });
 
   const navigate = useNavigate();
@@ -24,8 +22,9 @@ export default function SignInPage() {
   function handleSignUp(e) {
     e.preventDefault();
 
-    signIn()
+    signIn(user)
       .then(response => {
+        localStorage.setItem('token', response.data.token)
         setIsLoading(false);
         navigate("/");
       })
@@ -64,8 +63,8 @@ export default function SignInPage() {
           )}
         </Button>
       </Form>
-      <Link to="/signin">
-        <span>Não tem uma conta? Cadastre-se já!</span>
+      <Link to="/signup">
+        Não tem uma conta? Cadastre-se já!
       </Link>
     </Wrapper>
   );

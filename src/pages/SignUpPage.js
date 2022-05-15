@@ -24,7 +24,7 @@ export default function SignUpPage() {
   function handleSignUp(e) {
     e.preventDefault();
 
-    signUp().then(response => {
+    signUp(user).then(response => {
       setIsLoading(false);
       navigate("/signin");
     });
