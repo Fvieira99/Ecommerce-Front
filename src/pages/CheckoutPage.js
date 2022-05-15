@@ -3,8 +3,8 @@ import { useContext, useState, useEffect } from "react";
 
 import Header from "../components/Header";
 import Button from "../components/Button";
-import Input from "../components/Input";
 import { AppEcommerceContext } from "../context/CartContext";
+import { AiOutlineClose } from "react-icons/ai";
 import { order } from "../service/API";
 import { useNavigate } from 'react-router-dom'
 
@@ -13,8 +13,20 @@ import { useNavigate } from 'react-router-dom'
 export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [email, setEmail] = useState(null);
-  const { state } = useContext(AppEcommerceContext);
+  const { state, dispatch } = useContext(AppEcommerceContext);
   const navigate = useNavigate()
+
+
+
+  const deleteProduct = id => {
+    const deleted = state.cart.filter(item => item.id !== id);
+    let price = 0;
+    deleted.forEach(  item => {
+      price += item.price
+    } )
+    dispatch({ type: "deleted", payload: { products: deleted } });
+    dispatch({ type: 'addPrice', payload: { price: price }})
+  };
 
   function showProducts() {
     return state.cart.map(product => {
@@ -30,6 +42,7 @@ export default function CheckoutPage() {
               })}
             </span>
           </ProductDetails>
+          <AiOutlineClose onClick={() => deleteProduct(product.id)} />
         </ProductContainer>
       );
     });
@@ -90,7 +103,9 @@ export default function CheckoutPage() {
             </select>
           </PaymentMethodContainer>
         </UserInfo>
-        {state.cart.length !== 0 ? showProducts() : <></>}
+        <ProductCart>
+          {state.cart.length !== 0 ? showProducts() : <></>}
+        </ProductCart>
         <Total>
           <b>TOTAL</b>
           <span>{state.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
@@ -107,6 +122,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing:border-box;
 
   h3 {
     margin-top: 30px;
@@ -119,12 +135,13 @@ const Wrapper = styled.div`
 const CheckoutContainer = styled.div`
   margin-top: 30px;
   width: 90%;
+  padding: 30px;
   min-height: 80vh;
   border-radius: 5px;
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 40px;
 `;
 
@@ -229,3 +246,8 @@ const Total = styled.div`
     font-weight: 700;
   }
 `;
+
+const ProductCart = styled.div`
+  width: 100%;
+  max-width: 300px;
+`
