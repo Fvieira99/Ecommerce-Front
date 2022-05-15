@@ -1,35 +1,57 @@
-import { useContext } from 'react'; 
+import { useContext } from "react";
 
 //Dependencies
 import styled from "styled-components";
 import { useNavigate } from "react-router";
-import { AppEcommerceContext } from '../context/CartContext'
+import { AppEcommerceContext } from "../context/CartContext";
 
 function Product(props) {
-
   const navigate = useNavigate();
 
-  const { state, dispatch } = useContext(AppEcommerceContext)
+  const { state, dispatch } = useContext(AppEcommerceContext);
 
-  const addProduct = (product) => {
-    dispatch({ type: 'addProduct', payload: { product } })
-    dispatch({ type: 'addPrice', payload: { price: product.price + state.price } })
-  }
-
+  const addProduct = product => {
+    dispatch({ type: "addProduct", payload: { product } });
+    dispatch({
+      type: "addPrice",
+      payload: { price: product.price + state.price }
+    });
+  };
 
   return (
-    <ProductContainer >
-      <img src={props.figure} alt="product" onClick={() => navigate(`/product/${props.slug}`)} style={{ cursor: 'pointer' }} />
+    <ProductContainer>
+      <img
+        src={props.figure}
+        alt="product"
+        onClick={() => navigate(`/product/${props.slug}`)}
+        style={{ cursor: "pointer" }}
+      />
       <span>{props.title}</span>
-      <span>{props.price.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}</span>
-      <button onClick={() => addProduct({id: props.id, figure: props.figure, price: props.price, title: props.title})}>Adicionar</button>
+      <span>
+        {props.price.toLocaleString("pt-br", {
+          style: "currency",
+          currency: "BRL"
+        })}
+      </span>
+      <button
+        onClick={() =>
+          addProduct({
+            id: props.id,
+            figure: props.figure,
+            price: props.price,
+            title: props.title
+          })
+        }
+      >
+        Adicionar
+      </button>
     </ProductContainer>
   );
 }
 
 const ProductContainer = styled.div`
   width: 48%;
-  height: 260px;
+  min-height: 260px;
   border: 1px solid black;
   display: flex;
   flex-direction: column;
@@ -42,10 +64,13 @@ const ProductContainer = styled.div`
 
   img {
     width: 150px;
+    height: 150px;
   }
 
   span {
+    width: 90%;
     font-weight: 700;
+    text-align: center;
   }
 
   button {

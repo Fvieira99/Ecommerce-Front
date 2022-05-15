@@ -20,7 +20,9 @@ export default function SignInPage() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    localStorage.getItem("token") && navigate("/");
+  }, []);
 
   function handleSignUp(e) {
     e.preventDefault();
@@ -48,7 +50,7 @@ export default function SignInPage() {
 
   return (
     <Wrapper>
-      <h1 onClick={() => navigate("/")}>Shoes&Shoes</h1>
+      <h1 onClick={() => navigate("/")}>Shoes&Clothes</h1>
       <Form onSubmit={handleSignUp}>
         <Input
           onChange={e => setUser({ ...user, email: e.target.value })}

@@ -38,7 +38,7 @@ export default function Dashboard(props) {
       <BluredBG>teste</BluredBG>
       <DashboardContainer showDashboard={showDashboard}>
         <DashboardHeader>
-          <h3>SHOES&SHOES</h3>
+          <h3>Shoes&Clothes</h3>
         </DashboardHeader>
 
         <OptionsContainer>{showOptionsOrName()}</OptionsContainer>
