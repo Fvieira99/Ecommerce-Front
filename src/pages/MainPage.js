@@ -14,7 +14,7 @@ export default function MainPage() {
   // descobrir a quantidade limite de paginas e receber no front usando o setPageLimit
   const [isHome, setIsHome] = useState(true);
   const [page, setPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(2);
+  const [pageLimit, setPageLimit] = useState(0);
   const [products, setProducts] = useState(null);
 
   const [showDashboard, setShowDashboard] = useState(false);
@@ -22,10 +22,12 @@ export default function MainPage() {
   useEffect(() => {
     getProducts(page)
       .then(response => {
-        setProducts(response.data);
+        setProducts(response.data.products);
+        setPageLimit(Math.ceil(response.data.pages / 10))
       })
       .catch(error => console.log(error));
   }, []);
+
 
   return (
     <>
@@ -60,9 +62,9 @@ export default function MainPage() {
               onClick={() => {
                 if (page !== 1) {
                   setPage(page - 1);
-                  getProducts(page)
+                  getProducts(page - 1)
                     .then(response => {
-                      setProducts(response.data);
+                      setProducts(response.data.products);
                     })
                     .catch(error => console.log(error));
                 }
@@ -73,11 +75,11 @@ export default function MainPage() {
               className="arrow"
               pointerEvents={page === pageLimit ? "none" : "auto"}
               onClick={() => {
-                if (page !== pageLimit) {
+                if (page < pageLimit) {
                   setPage(page + 1);
-                  getProducts(page)
+                  getProducts(page + 1)
                     .then(response => {
-                      setProducts(response.data);
+                      setProducts(response.data.products);
                     })
                     .catch(error => console.log(error));
                 }

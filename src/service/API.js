@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "https://ecommerce-carax.herokuapp.com";
-// const BASE_URL = "http://localhost:5500";
+// const BASE_URL = "https://ecommerce-carax.herokuapp.com";
+const BASE_URL = "http://localhost:5555";
 
 export function signUp(body) {
   const promise = axios.post(`${BASE_URL}/signup`, body);
@@ -14,7 +14,7 @@ export function signIn(body) {
 }
 
 export function getProducts(page) {
-  const promise = axios.get(`${BASE_URL}/products?page=${page}&limit=10`);
+  const promise = axios.get(`${BASE_URL}/products?page=${page}&limit=8`);
   return promise;
 }
 
