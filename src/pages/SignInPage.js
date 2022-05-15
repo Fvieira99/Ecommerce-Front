@@ -1,5 +1,5 @@
 //Dependencies
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ThreeDots } from "react-loader-spinner";
@@ -9,6 +9,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 //Services
 import { signIn } from "../service/API";
+import { showErrorAlert } from "../service/Utils";
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,8 @@ export default function SignInPage() {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {}, []);
 
   function handleSignUp(e) {
     e.preventDefault();
@@ -30,6 +33,14 @@ export default function SignInPage() {
         navigate("/");
       })
       .catch(error => {
+        if (error.response.status === 422) {
+          showErrorAlert("Não foi possível processar seus dados.");
+        } else if (error.response.status === 500) {
+          showErrorAlert("Usuário não existe.");
+        } else {
+          showErrorAlert("As credenciais foram preenchidas incorretamente.");
+        }
+
         setIsLoading(false);
         console.log(error);
       });
@@ -64,7 +75,9 @@ export default function SignInPage() {
           )}
         </Button>
       </Form>
-      <Link to="/signup">Não tem uma conta? Cadastre-se já!</Link>
+      <Link to="/signup">
+        <span>Não tem uma conta? Cadastre-se já!</span>
+      </Link>
     </Wrapper>
   );
 }
@@ -76,7 +89,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
 
   h1 {
     font-family: "Koulen", cursive;

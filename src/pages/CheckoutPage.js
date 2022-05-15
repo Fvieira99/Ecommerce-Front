@@ -7,6 +7,7 @@ import { AppEcommerceContext } from "../context/CartContext";
 import { AiOutlineClose } from "react-icons/ai";
 import { order } from "../service/API";
 import { useNavigate } from "react-router-dom";
+import { showErrorAlert, showSuccessAlert } from "../service/Utils";
 
 //FIX ME
 
@@ -66,16 +67,19 @@ export default function CheckoutPage() {
         payment: paymentMethod,
         total_payment: state.price || localStorage.getItem("cart").price
       });
-      alert("Pedido Finalizado");
-      dispatch({ type: "reset" });
-      navigate("/");
+      showSuccessAlert("Pedido Finalizado").then(result => {
+        dispatch({ type: "reset" });
+        navigate("/");
+      });
     } catch (error) {
-      alert(error.response.data);
+      showErrorAlert(error.response.data);
     }
   }
 
   useEffect(() => {
     !localStorage.getItem("token") && navigate("/signin");
+    !localStorage.getItem("token") &&
+      showErrorAlert("Voce não está logado ainda.");
   });
 
   return (
@@ -145,13 +149,13 @@ const Wrapper = styled.div`
 const CheckoutContainer = styled.div`
   margin-top: 30px;
   width: 90%;
-  padding: 30px;
+  // padding: 30px;
   min-height: 80vh;
   border-radius: 5px;
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: 40px;
 `;
 
@@ -230,7 +234,8 @@ const PaymentMethodContainer = styled.div`
 `;
 
 const ProductContainer = styled.div`
-  width: 90%;
+  width: 100%;
+  max-width: 300px;
   height: 150px;
   display: flex;
   align-items: center;
@@ -258,6 +263,5 @@ const Total = styled.div`
 `;
 
 const ProductCart = styled.div`
-  width: 100%;
-  max-width: 300px;
+  width: 90%;
 `;

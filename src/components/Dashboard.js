@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { BsArrowBarLeft } from "react-icons/bs";
-import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function Dashboard(props) {

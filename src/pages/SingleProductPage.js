@@ -1,8 +1,8 @@
 //Dependencies
 import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router";
-import { AppEcommerceContext } from '../context/CartContext'
+import { useParams } from "react-router";
+import { AppEcommerceContext } from "../context/CartContext";
 
 //Components
 import Header from "../components/Header";
@@ -12,18 +12,18 @@ import { getSingleProduct } from "../service/API";
 export default function ProductPage() {
   const [isHome, setIsHome] = useState(false);
   const [product, setProduct] = useState(null);
-  const navigate = useNavigate();
 
   const { productName } = useParams();
 
-  const { state, dispatch } = useContext(AppEcommerceContext)
+  const { state, dispatch } = useContext(AppEcommerceContext);
 
-
-  const addProduct = (product) => {
-    dispatch({ type: 'addProduct', payload: { product } })
-    dispatch({ type: 'addPrice', payload: { price: product.price +  state.price }})
-  }
-
+  const addProduct = product => {
+    dispatch({ type: "addProduct", payload: { product } });
+    dispatch({
+      type: "addPrice",
+      payload: { price: product.price + state.price }
+    });
+  };
 
   useEffect(() => {
     getSingleProduct(productName)
@@ -56,7 +56,7 @@ export default function ProductPage() {
       <SingleProduct>
         {product ? showSingleProduct() : "Esse produto não existe"}
       </SingleProduct>
-      <button onClick={() => addProduct(product)} >Adicionar ao carrinho</button>
+      <button onClick={() => addProduct(product)}>Adicionar ao carrinho</button>
     </Wrapper>
   );
 }

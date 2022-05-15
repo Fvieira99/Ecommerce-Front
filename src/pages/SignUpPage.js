@@ -9,6 +9,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 //Services
 import { signUp } from "../service/API";
+import { showErrorAlert } from "../service/Utils";
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +25,20 @@ export default function SignUpPage() {
   function handleSignUp(e) {
     e.preventDefault();
 
-    signUp(user).then(response => {
-      setIsLoading(false);
-      navigate("/signin");
-    });
+    signUp(user)
+      .then(response => {
+        setIsLoading(false);
+        navigate("/signin");
+      })
+      .catch(error => {
+        if (error.response.status === 422) {
+          showErrorAlert("Não foi possível processar seus dados.");
+        } else if (error.response.status === 409) {
+          showErrorAlert("Usuário já cadastrado");
+        } else {
+          showErrorAlert("O servidor não conseguiu processar os seus dados");
+        }
+      });
   }
 
   return (
@@ -90,7 +101,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
 
   h1 {
     font-family: "Koulen", cursive;

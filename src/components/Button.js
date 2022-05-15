@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const Button = styled.button`
   pointer-events: ${props => (props.isLoading ? "none" : "auto")};
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
