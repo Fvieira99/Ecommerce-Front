@@ -38,6 +38,13 @@ export default function SignUpPage() {
         } else {
           showErrorAlert("O servidor não conseguiu processar os seus dados");
         }
+        setIsLoading(false);
+        setUser({
+          email: "",
+          name: "",
+          password: "",
+          passwordConfirmation: ""
+        });
       });
   }
 

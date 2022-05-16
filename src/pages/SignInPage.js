@@ -44,7 +44,10 @@ export default function SignInPage() {
         }
 
         setIsLoading(false);
-        console.log(error);
+        setUser({
+          email: "",
+          password: ""
+        });
       });
   }
 
