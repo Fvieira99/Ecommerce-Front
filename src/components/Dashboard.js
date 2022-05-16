@@ -43,14 +43,6 @@ export default function Dashboard(props) {
 
         <OptionsContainer>{showOptionsOrName()}</OptionsContainer>
 
-        <DashboardHeader>
-          <h3>Categorias</h3>
-        </DashboardHeader>
-
-        <CategoriesContainer>
-          <span onClick={() => setShowDashboard(false)}>Sneakers</span>
-        </CategoriesContainer>
-
         <BsArrowBarLeft
           id="arrow-back"
           onClick={() => setShowDashboard(false)}
@@ -86,16 +78,8 @@ const DashboardContainer = styled.div`
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
 
   #arrow-back {
+    margin-top: 30px;
     font-size: 20px;
-  }
-`;
-
-const CategoriesContainer = styled.div`
-  margin-bottom: 25px;
-
-  span {
-    margin-top: 25px;
-    font-weight: 700;
   }
 `;
 

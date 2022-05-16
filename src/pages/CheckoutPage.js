@@ -58,7 +58,8 @@ export default function CheckoutPage() {
         JSON.parse(localStorage.getItem("cart")).cart.length <= 0 ||
         state.cart <= 0
       ) {
-        alert("Você prescisa escolher algum produto!");
+        // alert("Você prescisa escolher algum produto!");
+        showErrorAlert("Você prescisa escolher algum produto!");
         return;
       }
 

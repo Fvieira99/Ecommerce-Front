@@ -12,14 +12,10 @@ import { useNavigate } from "react-router";
 export default function Header(props) {
   const { isHome, setShowDashboard } = props;
 
-  const cart = useRef(null);
-
   const { state, dispatch } = useContext(AppEcommerceContext);
 
   const openCard = e => {
-    e.currentTarget.contains(cart.current)
-      ? setCartModal(true)
-      : setCartModal(false);
+    !cartModal ? setCartModal(true) : setCartModal(false);
   };
   const [cartModal, setCartModal] = useState(false);
 
@@ -49,16 +45,14 @@ export default function Header(props) {
           <BsArrowBarLeft className="icon" onClick={() => navigate(-1)} />
         )}
         <h1 onClick={() => navigate("/")}>Shoes&Clothes</h1>
-        <OpenMenu onMouseOver={e => openCard(e)}>
-          <div className="cart-container">
+        <OpenMenu>
+          <div className="cart-container" onClick={e => openCard(e)}>
             <AiOutlineShoppingCart id="cart" />
             <span>{state.cart.length}</span>
           </div>
           <ModalProducts
             style={{ display: cartModal ? "block" : "none" }}
             className="card-modal"
-            ref={cart}
-            onMouseOut={() => setCartModal(false)}
           >
             <ProductsArea>
               {state.cart &&
